@@ -1,0 +1,134 @@
+---
+title: "Biotoxin_Daily_Aggregate_Num"
+author: "Liam Brennan"
+date: "2023-03-25"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(hrbrthemes)
+```
+
+Reading all Biotoxin Data
+```{r}
+biotoxin_data<-read_csv("Biotoxin_data_Lorraine/all_biotoxin_results_2016-2023_clean.csv", show_col_types = FALSE)
+Cssp_sorted_bysite<-read_csv("Biotoxin_data_Lorraine/cssp_fc_data_by_site_with_location.csv", show_col_types = FALSE)
+Most_recent_testing_dates<-read_csv("Biotoxin_data_Lorraine/most_recent_biotoxin_testing_dates.csv", show_col_types = FALSE)
+
+#Reading in Subareas names that were edited in excel to add the 0 in front of the subarea number (e.g., Subarea 1-3, became Subarea 01-03, to match the subarea naming style of the CFIA biotoxin data)
+
+Gitgaat_subareas_text<-read_csv("CSV_files/Gitgaat_subareas_text_renamed.csv", show_col_types = FALSE)
+#remove DFO Subarea North and South - doesn't match CFIA
+Gitgaat_subareas_text<-Gitgaat_subareas_text[-(13:14),]
+Klahoose_subareas_text<-read_csv("CSV_files/Klahoose_subareas_text_renamed.csv", show_col_types = FALSE)
+Malahat_subareas_text<-read_csv("CSV_files/Malahat_subareas_text_renamed.csv", show_col_types = FALSE)
+Tseshat_subareas_text<-read_csv("CSV_files/Tseshat_subareas_text_renamed.csv", show_col_types = FALSE)
+
+biotoxin_data_subarea_concat<-mutate(biotoxin_data, Subarea_ID_R = paste("Subarea", biotoxin_data$subarea_id))
+
+#Filter our biotoxin data for territories
+Gitgaat_biotoxin_data<-filter(biotoxin_data_subarea_concat,Subarea_ID_R %in% Gitgaat_subareas_text$Gitgaat_subareas_text)
+Klahoose_biotoxin_data<-filter(biotoxin_data_subarea_concat,Subarea_ID_R %in% Klahoose_subareas_text$Klahoose_subareas_text)
+Tseshat_biotoxin_data<-filter(biotoxin_data_subarea_concat,Subarea_ID_R %in% Tseshat_subareas_text$Tseshat_subareas_text)
+Malahat_biotoxin_data<-filter(biotoxin_data_subarea_concat,Subarea_ID_R %in% Malahat_subareas_text$Malahat_subareas_text)
+```
+
+
+Gitgaat Biotoxin
+```{r}
+G_ASP<- Gitgaat_biotoxin_data %>% filter(test == "ASP")
+G_ASP$result<- gsub("<1","0",G_ASP$result)              # Replace <1 with 0 to plot
+G_PSP<-Gitgaat_biotoxin_data %>% filter(test == "PSP")
+G_PSP$result<- gsub("<25","0",G_PSP$result)            # Replace <25 with 0 to plot
+
+
+G_Ok_acid_DTX<-Gitgaat_biotoxin_data %>% filter(test == "Okadaic acid + DTX Toxins")
+G_Ok_acid_DTX$result<- gsub("ND","0",G_Ok_acid_DTX$result) # Doing this to allow loop below to run with aggregate function, but NO DATA for results
+
+G_Pect_tox<-Gitgaat_biotoxin_data %>% filter(test == "Pectenotoxins")
+G_Pect_tox$result<- gsub("ND","0",G_Pect_tox$result) # Doing this to allow loop below to run with aggregate function, but NO DATA for results
+```
+
+
+Klahoose Biotoxin
+```{r}
+K_ASP<- Klahoose_biotoxin_data %>% filter(test == "ASP")
+K_ASP$result<- gsub("<1","0",K_ASP$result)              # Replace <1 with 0 to plot
+K_PSP<-Klahoose_biotoxin_data %>% filter(test == "PSP")
+K_PSP$result<- gsub("<25","0",K_PSP$result)            # Replace <25 with 0 to plot
+K_Ok_acid_DTX<-Klahoose_biotoxin_data %>% filter(test == "Okadaic acid + DTX Toxins")
+K_Ok_acid_DTX$result<- gsub("ND","0",K_Ok_acid_DTX$result) # Doing this to allow loop below to run with aggregate function, but NO DATA for results
+K_Pect_tox<-Klahoose_biotoxin_data %>% filter(test == "Pectenotoxins")
+K_Pect_tox$result<- gsub("ND","0",K_Pect_tox$result) # Doing this to allow loop below to run with aggregate function, but NO DATA for results
+```
+
+Malahat Biotoxin
+
+```{r}
+M_ASP<- Malahat_biotoxin_data %>% filter(test == "ASP")
+M_ASP$result<- gsub("<1","0",M_ASP$result)              # Replace <1 with 0 to plot
+M_PSP<-Malahat_biotoxin_data %>% filter(test == "PSP")
+M_PSP$result<- gsub("<25","0",M_PSP$result)            # Replace <25 with 0 to plot
+M_Ok_acid_DTX<-Malahat_biotoxin_data %>% filter(test == "Okadaic acid + DTX Toxins")
+M_Ok_acid_DTX$result<- gsub("ND","0",M_Ok_acid_DTX$result) # Doing this to allow loop below to run with aggregate function, but NO DATA for results
+M_Pect_tox<-Malahat_biotoxin_data %>% filter(test == "Pectenotoxins")
+M_Pect_tox$result<- gsub("ND","0",M_Pect_tox$result) # Doing this to allow loop below to run with aggregate function, but NO DATA for results
+```
+Tseshat Biotoxin
+
+```{r}
+T_ASP<- Tseshat_biotoxin_data %>% filter(test == "ASP")
+T_ASP$result<- gsub("<1","0",T_ASP$result)              # Replace <1 with 0 to plot
+T_PSP<-Tseshat_biotoxin_data %>% filter(test == "PSP")
+T_PSP$result<- gsub("<25","0",T_PSP$result)            # Replace <25 with 0 to plot
+T_Ok_acid_DTX<-Tseshat_biotoxin_data %>% filter(test == "Okadaic acid + DTX Toxins")
+T_Ok_acid_DTX$result<- gsub("ND","0",T_Ok_acid_DTX$result) # Doing this to allow loop below to run with aggregate function, but NO DATA for results
+T_Pect_tox<-Tseshat_biotoxin_data %>% filter(test == "Pectenotoxins")
+T_Pect_tox$result<- gsub("ND","0",T_Pect_tox$result) # Doing this to allow loop below to run with aggregate function, but NO DATA for results
+```
+
+Nest all dataframes into one Dataframe
+
+```{r}
+ASP_GKMT_list<-list(G_ASP,K_ASP,M_ASP,T_ASP)
+PSP_GKMT_list<-list(G_PSP,K_PSP,M_PSP,T_PSP)
+Ok_acid_DTX_GKMT_list<-list(G_Ok_acid_DTX,K_Ok_acid_DTX,M_Ok_acid_DTX,T_Ok_acid_DTX)
+Pect_tox_GKMT_list<-list(G_Pect_tox,K_Pect_tox,M_Pect_tox,T_Pect_tox)
+
+Biotoxin_nest_list_day_APOPec_GKMT<-list(ASP_GKMT_list,PSP_GKMT_list,Ok_acid_DTX_GKMT_list,Pect_tox_GKMT_list)
+```
+
+
+
+Biotoxin Data LOOP to aggregate the test positivity
+
+```{r}
+
+for (x in 1:4){
+  for (y in 1:4){
+    
+######################
+test_df<-Biotoxin_nest_list_day_APOPec_GKMT[[x]][[y]]
+#######################
+
+test_df <- as.data.frame(test_df)
+test_df$result<- as.numeric(test_df$result) # convert character to numeric, TO NOTE, this step removes ALL TEST MEASUREMENTS
+
+# Aggregate by maximum to select only the highest value when multiple tissue samples were above management threshold and taken on the same day
+agg_test <- aggregate(result ~ harvest_date, data=test_df, function(x) sum(x > 0, na.rm = TRUE))
+
+# Sort
+agg_test <- agg_test[with(agg_test, order(harvest_date)),]
+
+# Assign to Variable
+df_agg_test<- agg_test ####
+
+Biotoxin_nest_list_day_APOPec_GKMT[[x]][[y]]<-as.list(df_agg_test)
+}}
+
+###################################################
+
+```
+
