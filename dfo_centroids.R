@@ -34,12 +34,8 @@ colnames(coordinates) <- c("LABEL", "DFO_id", "lon", "lat")
 # change DFO_id to numeric type
 coordinates$DFO_id <- as.numeric(coordinates$DFO_id)
 
-# save coordinates df as csv
-# dont worry about insignificant error: "file name and format don't match"
-write.xlsx(coordinates, "centroid_coordinates.csv", rowNames = FALSE)
-
-# alternate save to avoid the error
-# write.xlsx(coordinates, "centroid_coordinates.xlsx", rowNames = FALSE)
+# save coordinates df as excel file
+write.xlsx(coordinates, "centroid_coordinates.xlsx", rowNames = FALSE)
 
 ## DF -> SP OBJECT (add geometry) -------------
 centroids_map <- coordinates %>% 
