@@ -40,7 +40,7 @@ nc.big.brick <- brick("nutrientfile.nc", varname="no3", level=1)
 # dim(nc.big.brick)
 
 
-## FILL NA VALUES -----------
+## FILL NO3 NA VALUES -----------
 # define empty results data frame
 res <- matrix(nrow = nrow(loc), ncol = length(names(nc.big.brick)))
 colnames(res) <- substr(names(nc.big.brick), 2, 11) # select only the day and not the hour
@@ -99,7 +99,7 @@ nc.big.brick2 <- brick("nutrientfile.nc", varname="po4", level=1)
 # check dimensions of data: col(lon)  rows(lat)  layers(days)
 # dim(nc.big.brick)
 
-## FILL NA VALUES -----------
+## FILL PO4 NA VALUES -----------
 # define empty results data frame
 res2 <- matrix(nrow = nrow(loc), ncol = length(names(nc.big.brick2)))
 colnames(res2) <- substr(names(nc.big.brick2), 2, 11) # select only the day and not the hour
