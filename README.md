@@ -5,7 +5,9 @@ This code repository was used in the data downloading, tidying, and model buildi
 Use code in the following files to tidy data for use in the model
 - ORAS5_Download ... salinity
 - CMS_nutrient_download ... nitrate and phosphate at various constant depths
-
+- ERA5_sst_download ... Sea-surface temperature
+- ERA5_tp_download ... Total precipitation
+- ERA5_wind_download ... Wind speed
 
 ## Data used to run the model
 - Read Me file for the following data available at:
