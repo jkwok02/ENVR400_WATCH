@@ -9,7 +9,7 @@ Use code in the following files to tidy data for use in the model
 - ERA5_tp_download ... Total precipitation
 - ERA5_wind_download ... Wind speed
 
-## Data used to run the model
+## Tidied data used to run the model
 - Read Me file for the following data available at:
   https://drive.google.com/file/d/1FuOWLCernbXmF0BFKj0oDpX0Jolid0Mu/view?usp=sharing
   
@@ -21,6 +21,11 @@ Use code in the following files to tidy data for use in the model
   https://drive.google.com/drive/folders/167ejhUG79VrJ703xWs2LNgqh_a54-1hI?usp=sharing
 - Lighthouse data (only used to compare/affirm use of climate reanalysis data) available at:
   https://drive.google.com/drive/folders/161jRYao0kUcOHZnv2jl-QajI-8hW63Wk?usp=sharing
+
+## Code for running the model
+- use **Prepare_data** to assemble tidied data into a model input table
+- use **RF_MLP_model** to create Random Forest and MLP models
+- use **RF_MLP_Prediction** to run model(s)
 
 ## GIS Code
 - use **dfo_centroids** to compute centroids of each DFO subarea
