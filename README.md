@@ -6,7 +6,7 @@ Use code in the following files to tidy data for use in the model
 - ORAS5_Download ... salinity
 - CMS_nutrient_download ... nitrate and phosphate at various constant depths
 - ERA5_sst_download ... Sea-surface temperature
-- ERA5_tp_download ... Total precipitation
+- ERA5_tp_download ... Total precipitation AND Air Temperature at 2m ('t2m')
 - ERA5_wind_download ... Wind speed
 
 ## Tidied data used to run the model
