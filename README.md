@@ -31,5 +31,7 @@ Use code in the following files to tidy data for use in the model
 - use **dfo_centroids** to compute centroids of each DFO subarea
 - **map_dfo_subareas_label** to produce a DFO subarea map with centroids that show DFO subarea ID and latest testing date as shown here:
   https://github.com/Shirleyzhou0503/ENVR400_WATCH/assets/99441762/43c0fd44-fc73-4def-9617-31b87147c7dd
+- DFO map with information on each subarea also available at:
+  https://www.arcgis.com/apps/mapviewer/index.html?webmap=2a3091ccf46d4e3fbd14062545b0acad
 
 *Thank you to Christina Draeger for all her coding assistance!*
